@@ -1,0 +1,25 @@
+<div class="p-4">
+  <h5>Crear nueva marca:</h5>
+  <!-- <form> -->
+  <mat-form-field class="w-full">
+    <mat-label>Nombre de la marca </mat-label>
+    <input
+      matInput
+      placeholder="Norma, Bic, Staedtler..."
+      type="text"
+      name="brandName"
+      [formControl]="brandName"
+    />
+  </mat-form-field>
+  <!-- </form> -->
+  <div class="w-2/5 flex flex-wrap justify-center">
+    <button
+      mat-flat-button
+      color="accent"
+      class="w-full text-base"
+      (click)="createBrand()"
+    >
+      Guardar
+    </button>
+  </div>
+</div>

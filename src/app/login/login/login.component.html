@@ -1,0 +1,35 @@
+<div class="w-full h-full flex flex-wrap justify-center content-center">
+  <div class="w-full text-center">
+    <h3 class="text-4xl">¡Bienvenido de vuelta!</h3>
+    <span class="text-slate-400"
+      >Sistema de administración de inventario y ventas.</span
+    >
+  </div>
+  <div class="p-5 w-3/4 rounded-md">
+    <form class="flex flex-wrap flex-col gap-4">
+      <mat-form-field>
+        <input
+          type="email"
+          matInput
+          [formControl]="emailFormControl"
+          placeholder="usuario@correo.com"
+        />
+        <mat-hint align="start">Email</mat-hint>
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          type="password"
+          matInput
+          [formControl]="passwordFormControl"
+          placeholder="********"
+        />
+        <mat-hint align="start">Clave</mat-hint>
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+      <div class="mx-auto">
+        <button mat-fab extended>Iniciar Sesión</button>
+      </div>
+    </form>
+  </div>
+</div>

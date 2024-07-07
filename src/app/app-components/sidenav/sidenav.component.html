@@ -1,0 +1,48 @@
+<div class="flex flex-col h-screen">
+  <mat-toolbar
+    class="border w-screen h-16 flex content-center flex-wrap justify-between p-4 sticky top-0"
+    color="warn"
+  >
+    <span class="flex flex-wrap content-center gap-2">
+      <button
+        mat-icon-button
+        (click)="sidenav.toggle()"
+        class="flex flex-wrap content-center"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="text-2xl">Bazar App</span>
+    </span>
+    <span class="flex">
+      <mat-icon class="">account_circle</mat-icon>
+    </span>
+  </mat-toolbar>
+  <mat-sidenav-container class="flex-grow p-4">
+    <mat-sidenav #sidenav [mode]="sideNavMode" class="p-4">
+      <nav>
+        <ul class="flex flex-col gap-5 list-none">
+          @for (route of routes; track route.name) {
+          <li>
+            <a
+              [routerLink]="route.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="flex flex-wrap content-center gap-2 no-underline"
+            >
+              <mat-icon color="primary" class="text-2xl">{{
+                route.icon
+              }}</mat-icon>
+              <span class="text-lg">
+                {{ route.name }}
+              </span>
+            </a>
+          </li>
+          }
+        </ul>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

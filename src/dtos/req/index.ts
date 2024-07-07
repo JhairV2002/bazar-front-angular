@@ -1,0 +1,1 @@
+export { BrandReqDTO } from './BrandReqDTO';
