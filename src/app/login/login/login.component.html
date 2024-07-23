@@ -1,34 +1,29 @@
 <div class="w-full h-full flex flex-wrap justify-center content-center">
   <div class="w-full text-center">
     <h3 class="text-4xl">¡Bienvenido de vuelta!</h3>
-    <span class="text-slate-400"
-      >Sistema de administración de inventario y ventas.</span
-    >
+    <span class="text-slate-400">Sistema de administración de inventario y ventas.</span>
   </div>
   <div class="p-5 w-3/4 rounded-md">
-    <form class="flex flex-wrap flex-col gap-4">
+    <form class="flex flex-wrap flex-col gap-4" [formGroup]="loginFormGroup">
       <mat-form-field>
-        <input
-          type="email"
-          matInput
-          [formControl]="emailFormControl"
-          placeholder="usuario@correo.com"
-        />
+        <input type="email" matInput formControlName="username" placeholder="usuario@correo.com" />
         <mat-hint align="start">Email</mat-hint>
         <mat-icon matSuffix>mail</mat-icon>
       </mat-form-field>
       <mat-form-field>
-        <input
-          type="password"
-          matInput
-          [formControl]="passwordFormControl"
-          placeholder="********"
-        />
+        <input type="password" matInput formControlName="password" placeholder="********" />
         <mat-hint align="start">Clave</mat-hint>
         <mat-icon matSuffix>lock</mat-icon>
       </mat-form-field>
       <div class="mx-auto">
-        <button mat-fab extended>Iniciar Sesión</button>
+        <button mat-fab extended (click)="loginUser()" [disabled]="isSubmitBtnDisabled">
+          <div class="flex gap-4">
+            {{ submitBtnText }}
+            @if (isSubmitBtnDisabled) {
+            <mat-spinner [diameter]="loadingSpinnerDiameter"></mat-spinner>
+            }
+          </div>
+        </button>
       </div>
     </form>
   </div>
