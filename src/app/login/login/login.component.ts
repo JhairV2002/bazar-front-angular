@@ -13,7 +13,6 @@ import { LoginService } from '../services/login.service';
 import { AlertComponent } from '../../utilComponents/alert/alert.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
