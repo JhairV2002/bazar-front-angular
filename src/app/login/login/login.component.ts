@@ -61,6 +61,11 @@ export class LoginComponent {
     this.swapBtnText();
   }
 
+  public cleanForm = () => {
+    this.loginFormGroup.get('username')?.setValue('');
+    this.loginFormGroup.get('password')?.setValue('');
+  };
+
   public loginUser = () => {
     this.toggleActiveBtn();
     console.log(this.loginFormGroup.value);
@@ -77,6 +82,7 @@ export class LoginComponent {
           duration: 3000,
         });
         this.toggleActiveBtn();
+        this.cleanForm();
       });
   };
 }

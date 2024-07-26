@@ -6,12 +6,13 @@ import { LoginResDTO } from '../../../dtos/res/LoginResDTO';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { GenericResponseDTO } from '../../../dtos/res';
 import { userAuthorizedKey } from '../../../constants/localStorageConstants';
+import { CookiesUtilService } from '../../utils/cookies-util.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookiesService: CookiesUtilService) { }
 
   public loginUser(
     req: LoginReqDTO,
@@ -20,7 +21,7 @@ export class LoginService {
       .post<GenericResponseDTO<LoginResDTO>>(authenticationUrl, req)
       .pipe(
         tap((res) => {
-          localStorage.setItem(userAuthorizedKey, 'true');
+          this.cookiesService.saveAuthenticationStatus();
         }),
         catchError((err) => {
           console.log(err);

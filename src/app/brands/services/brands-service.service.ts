@@ -11,26 +11,18 @@ import {
   getBrandsWithProductsCant,
   token,
 } from '../../../constants/httpUrlConstants';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, startWith, tap } from 'rxjs';
 import { BrandReqDTO } from '../../../dtos/req';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BrandsServiceService {
-  constructor(private httpClient: HttpClient) {}
-
-  private headers = new HttpHeaders({
-    Authorization: 'Bearer ' + token,
-  });
+  constructor(private httpClient: HttpClient) { }
 
   public getBrands(): Observable<BrandListDTO[]> {
     return this.httpClient
-      .get<BrandListDTO[]>(getAllBrandsUrl, {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      })
+      .get<BrandListDTO[]>(getAllBrandsUrl)
       .pipe(
         tap({
           error: (e) => console.log(e),
@@ -39,17 +31,21 @@ export class BrandsServiceService {
   }
 
   public getBrandsProductsCant(): Observable<
-    GenericResponseDTO<BrandCantProductsResDTO[]> | GenericResponseDTO<null>
+    BrandCantProductsResDTO[] | null
   > {
     return this.httpClient
       .get<
         GenericResponseDTO<BrandCantProductsResDTO[]> | GenericResponseDTO<null>
-      >(getBrandsWithProductsCant, {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      })
+      >(getBrandsWithProductsCant)
       .pipe(
+        map((res) => {
+          if (res.data != null) {
+            console.log('desde brands$', res);
+            return res.data;
+          } else {
+            return [];
+          }
+        }),
         catchError((error) => {
           console.log(error);
           return of(error.error);
@@ -65,11 +61,7 @@ export class BrandsServiceService {
     }
 
     return this.httpClient
-      .post<GenericResponseDTO<BrandListDTO>>(createBrandUrl, request, {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      })
+      .post<GenericResponseDTO<BrandListDTO>>(createBrandUrl, request)
       .pipe(catchError((error) => of(error)));
   }
 }

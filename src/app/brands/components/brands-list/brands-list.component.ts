@@ -5,10 +5,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';
-import { MatTable, MatTableModule } from '@angular/material/table';
-import { Observable, map } from 'rxjs';
+import { MatTableModule } from '@angular/material/table';
+import { map } from 'rxjs';
 import {
-  BrandCantProductsResDTO,
   BrandListDTO,
   GenericResponseDTO,
 } from '../../../../dtos/res';
@@ -44,26 +43,18 @@ export class BrandsListComponent {
   constructor(
     private brandService: BrandsServiceService,
     public dialog: MatDialog
-  ) {}
+  ) { }
   public displayedColumns: string[] = ['Id', 'Nombre', 'Productos', 'Acciones'];
   public errorMessage: string = '';
-  brands$ = this.brandService.getBrandsProductsCant().pipe(
-    map((res) => {
-      if (res.data != null) {
-        console.log('desde brands$', res);
-        return res.data;
-      } else {
-        this.errorMessage = res.message;
-        return [];
-      }
-    })
-  );
+
+  brands$ = this.brandService.getBrandsProductsCant();
 
   openDialog(): void {
     const dialogRef = this.dialog.open(BrandsFormComponent);
-
     dialogRef
       .afterClosed()
-      .subscribe((result: GenericResponseDTO<BrandListDTO | null>) => {});
+      .subscribe((result: GenericResponseDTO<BrandListDTO | null>) => {
+        this.brands$ = this.brandService.getBrandsProductsCant();
+      });
   }
 }
