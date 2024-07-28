@@ -1,3 +1,7 @@
 <div>
-  <mat-spinner class="mx-auto bg-slate-700"></mat-spinner>
+  @if (isLoading){
+  <mat-spinner class="mx-auto"></mat-spinner>
+  } @else {
+  <ng-content></ng-content>
+  }
 </div>

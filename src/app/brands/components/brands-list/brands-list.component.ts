@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { map } from 'rxjs';
 import {
   BrandListDTO,
   GenericResponseDTO,
@@ -14,10 +13,11 @@ import {
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrandsFormComponent } from '../brands-form/brands-form.component';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '../../../utilComponents/alert/alert.component';
+import { LoaderComponent } from '../../../utilComponents/loader/loader.component';
 
 @Component({
   selector: 'app-brands-list',
@@ -35,6 +35,8 @@ import { AlertComponent } from '../../../utilComponents/alert/alert.component';
     MatSnackBarModule,
     MatCardModule,
     AlertComponent,
+    LoaderComponent,
+    MatSnackBarModule
   ],
   templateUrl: './brands-list.component.html',
   styleUrl: './brands-list.component.css',
@@ -42,7 +44,8 @@ import { AlertComponent } from '../../../utilComponents/alert/alert.component';
 export class BrandsListComponent {
   constructor(
     private brandService: BrandsServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackbar: MatSnackBar
   ) { }
   public displayedColumns: string[] = ['Id', 'Nombre', 'Productos', 'Acciones'];
   public errorMessage: string = '';
@@ -55,6 +58,7 @@ export class BrandsListComponent {
       .afterClosed()
       .subscribe((result: GenericResponseDTO<BrandListDTO | null>) => {
         this.brands$ = this.brandService.getBrandsProductsCant();
+        this.snackbar.open(result.message, 'Cerrar', { duration: 3000 })
       });
   }
 }

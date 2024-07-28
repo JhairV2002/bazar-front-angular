@@ -8,17 +8,18 @@ import {
 import {
   createBrandUrl,
   getAllBrandsUrl,
+  getBrandsWithProducts,
   getBrandsWithProductsCant,
-  token,
 } from '../../../constants/httpUrlConstants';
 import { Observable, catchError, map, of, startWith, tap } from 'rxjs';
 import { BrandReqDTO } from '../../../dtos/req';
+import { FetchService } from '../../utils/fetch.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BrandsServiceService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private fetchService: FetchService) { }
 
   public getBrands(): Observable<BrandListDTO[]> {
     return this.httpClient
@@ -30,32 +31,15 @@ export class BrandsServiceService {
       );
   }
 
-  public getBrandsProductsCant(): Observable<
-    BrandCantProductsResDTO[] | null
-  > {
-    return this.httpClient
-      .get<
-        GenericResponseDTO<BrandCantProductsResDTO[]> | GenericResponseDTO<null>
-      >(getBrandsWithProductsCant)
-      .pipe(
-        map((res) => {
-          if (res.data != null) {
-            console.log('desde brands$', res);
-            return res.data;
-          } else {
-            return [];
-          }
-        }),
-        catchError((error) => {
-          console.log(error);
-          return of(error.error);
-        })
-      );
+  public getBrandsProductsCant(): Observable<GenericResponseDTO<BrandCantProductsResDTO[] | null>> {
+    return this.fetchService.genericGetPetition<BrandCantProductsResDTO[] | null>(
+      getBrandsWithProductsCant
+    );
   }
 
   public createBrand(
     request: BrandReqDTO | null
-  ): Observable<GenericResponseDTO<BrandListDTO> | GenericResponseDTO<null>> {
+  ): Observable<GenericResponseDTO<BrandListDTO | null>> {
     if (request === null) {
       throw new Error('El nombre de la marca es requerido');
     }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AlertComponent } from '../alert/alert.component';
 
@@ -8,4 +8,6 @@ import { AlertComponent } from '../alert/alert.component';
   imports: [MatProgressSpinnerModule, AlertComponent],
   templateUrl: './loader.component.html',
 })
-export class LoaderComponent {}
+export class LoaderComponent {
+  @Input() isLoading: boolean = false;
+}
