@@ -19,7 +19,6 @@ type Routes = { name: string; path: string; icon?: string };
     RouterLinkActive,
   ],
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css',
 })
 export class SidenavComponent {
   public contentBackdrops: boolean = false;
