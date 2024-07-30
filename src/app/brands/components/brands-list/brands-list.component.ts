@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '../../../utilComponents/alert/alert.component';
 import { LoaderComponent } from '../../../utilComponents/loader/loader.component';
+import { TableFilterPipe } from '../../../../pipes/table-filter.pipe';
 
 @Component({
   selector: 'app-brands-list',
@@ -36,7 +37,8 @@ import { LoaderComponent } from '../../../utilComponents/loader/loader.component
     MatCardModule,
     AlertComponent,
     LoaderComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
+    TableFilterPipe
   ],
   templateUrl: './brands-list.component.html',
   styleUrl: './brands-list.component.css',
@@ -51,6 +53,8 @@ export class BrandsListComponent {
   public errorMessage: string = '';
 
   brands$ = this.brandService.getBrandsProductsCant();
+
+  searchFilter: string = '';
 
   openDialog(): void {
     const dialogRef = this.dialog.open(BrandsFormComponent);

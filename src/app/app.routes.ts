@@ -7,13 +7,18 @@ export const routes: Routes = [
   {
     path: 'app',
     component: SidenavComponent,
+    canActivate: [authenticationGuard],
     children: [
       {
         path: 'brands',
         loadChildren: () =>
           import('./brands/pages/brands.routes').then((m) => m.routes),
-        canActivate: [authenticationGuard],
       },
+      {
+        path: 'products',
+        loadChildren: () =>
+          import('./products/products.routes').then((m) => m.routes),
+      }
     ]
   },
   {

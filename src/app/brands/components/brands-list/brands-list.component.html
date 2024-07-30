@@ -1,6 +1,6 @@
 <div class="flex flex-wrap my-5">
   <mat-form-field appearance="fill">
-    <input matInput placeholder="Buscar..." />
+    <input matInput placeholder="Buscar..." [(ngModel)]="searchFilter"/>
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
@@ -17,7 +17,7 @@
 
 <app-loader [isLoading]="(brands$ | async)!.loading">
   @if ((brands$ | async)!.data != null && (brands$ | async)!.data!.length > 0){
-  <table mat-table [dataSource]="(brands$ | async)!.data!" class="
+  <table mat-table [dataSource]="(brands$ | async)!.data! |  tableFilter : searchFilter : 'brandName'  " class="
     mat-elevation-z8
     ">
     <ng-container matColumnDef="Id">

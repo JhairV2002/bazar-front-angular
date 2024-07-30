@@ -25,9 +25,9 @@ export class SidenavComponent {
   public sideNavMode: MatDrawerMode = 'over';
 
   public routes: Routes[] = [
-    { name: 'Inicio', path: '/home', icon: 'home' },
-    { name: 'Productos', path: '/products', icon: 'shopping_cart' },
-    { name: 'Marcas', path: '/brands', icon: 'branding_watermark' },
-    { name: 'Facturación', path: '/billing', icon: 'receipt' },
+    { name: 'Inicio', path: 'home', icon: 'home' },
+    { name: 'Productos', path: 'products', icon: 'shopping_cart' },
+    { name: 'Marcas', path: 'brands', icon: 'branding_watermark' },
+    { name: 'Facturación', path: 'billing', icon: 'receipt' },
   ];
 }

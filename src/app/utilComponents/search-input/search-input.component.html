@@ -1,0 +1,6 @@
+<div class="flex flex-wrap my-5">
+  <mat-form-field appearance="fill">
+    <input (keyup)="onInputValueKeyUp($event)"  matInput [placeholder]="placeholder" [(ngModel)]="inputValue"/>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+</div>
