@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchInputComponent } from '../../utilComponents/search-input/search-input.component';
 import { ProductsTableComponent } from '../components/products-table/products-table.component';
 import { LoaderComponent } from '../../utilComponents/loader/loader.component';
+import { AddProductBtnComponent } from '../components/add-product-btn/add-product-btn.component';
 
 @Component({
   selector: 'app-products',
@@ -13,19 +14,19 @@ import { LoaderComponent } from '../../utilComponents/loader/loader.component';
     MatIconModule,
     SearchInputComponent,
     ProductsTableComponent,
-    LoaderComponent
-
+    LoaderComponent,
+    AddProductBtnComponent,
+    AddProductBtnComponent,
   ],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrl: './products.component.css',
 })
 export class ProductsComponent {
-  constructor() { }
+  constructor() {}
 
   searchFilter: string = '';
 
   showSearchInput() {
     console.log(this.searchFilter);
   }
-
 }

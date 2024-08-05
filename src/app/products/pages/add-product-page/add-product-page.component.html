@@ -1,0 +1,51 @@
+<h3>Nuevo Producto</h3>
+
+<mat-card appearance="raised">
+  <mat-card-content class="flex flex-wrap">
+    <mat-icon color="primary">info</mat-icon>
+    <p>Creación de nuevos productos</p>
+  </mat-card-content>
+</mat-card>
+
+<div class="my-3">
+  <form class="flex flex-wrap gap-4">
+    <mat-form-field>
+      <mat-label>Nombre del producto</mat-label>
+      <input matInput placeholder="Ingrese el nombre del producto" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Stock del producto</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Ingrese el stock del producto"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Precio de compra</mat-label>
+      <input matInput type="number" placeholder="Ingrese el precio de compra" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Precio de venta</mat-label>
+      <input matInput type="number" placeholder="Ingrese el precio de venta" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Marcas</mat-label>
+      <mat-select>
+        @for (brand of (brands$ | async); track $index) {
+        <mat-option [value]="brand.brandName">{{ brand.brandName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div class="flex justify-center">
+    <button mat-flat-button color="primary">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+  </div>
+</div>
