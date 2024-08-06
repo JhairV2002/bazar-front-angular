@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FetchService } from '../../utils/fetch.service';
-import { getAllProductsUrl } from '../../../constants/httpUrlConstants';
+import {
+  createProductUrl,
+  getAllProductsUrl,
+} from '../../../constants/httpUrlConstants';
 import { ProductsResDTO } from '../../../dtos/res/ProductsResDTO';
 import { ProductReqDTO } from '../../../dtos/req/ProductReqDTO';
 
@@ -18,7 +21,7 @@ export class ProductsService {
 
   createProduct(product: ProductReqDTO) {
     return this.fetchService.genericPostPetition<null, ProductReqDTO>(
-      getAllProductsUrl,
+      createProductUrl,
       product
     );
   }

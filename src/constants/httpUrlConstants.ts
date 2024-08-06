@@ -16,6 +16,7 @@ export const deleteBrandUrl = (id: number): string =>
 
 export const productsBaseUrl: string = `${url}/products`;
 export const getAllProductsUrl: string = `${productsBaseUrl}/list-all/`;
+export const createProductUrl: string = `${productsBaseUrl}/create/`;
 
 // ---- Authentication ----
 
