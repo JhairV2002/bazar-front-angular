@@ -3,6 +3,8 @@ import { FetchService } from '../../utils/fetch.service';
 import {
   createProductUrl,
   getAllProductsUrl,
+  getProductByIdUrl,
+  updateProductUrl,
 } from '../../../constants/httpUrlConstants';
 import { ProductsResDTO } from '../../../dtos/res/ProductsResDTO';
 import { ProductReqDTO } from '../../../dtos/req/ProductReqDTO';
@@ -22,6 +24,19 @@ export class ProductsService {
   createProduct(product: ProductReqDTO) {
     return this.fetchService.genericPostPetition<null, ProductReqDTO>(
       createProductUrl,
+      product
+    );
+  }
+
+  getProductById(id: number) {
+    return this.fetchService.genericGetPetition<ProductsResDTO>(
+      getProductByIdUrl(id)
+    );
+  }
+
+  updateProduct(product: ProductReqDTO, id: number) {
+    return this.fetchService.genericPutPetition<null, ProductReqDTO>(
+      updateProductUrl(id),
       product
     );
   }

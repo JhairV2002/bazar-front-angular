@@ -6,11 +6,5 @@
     <p>Se registran, se ven y se actualiza el inventario de productos.</p>
   </mat-card-content>
 </mat-card>
-<div class="flex flex-wrap content-center my-5 gap-3">
-  <app-search-input
-    [(inputValue)]="searchFilter"
-    placeholder="Buscar Productos..."
-  ></app-search-input>
-  <app-add-product-btn></app-add-product-btn>
-</div>
-<app-products-table (searchFilter)="(searchFilter)"></app-products-table>
+
+<app-products-table></app-products-table>

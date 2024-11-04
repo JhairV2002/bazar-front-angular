@@ -1,9 +1,9 @@
-<h3>Nuevo Producto</h3>
+<h3>{{ tittle }}</h3>
 
 <mat-card appearance="raised">
   <mat-card-content class="flex flex-wrap">
     <mat-icon color="primary">info</mat-icon>
-    <p>Creación de nuevos productos</p>
+    <p>{{ description }}</p>
   </mat-card-content>
 </mat-card>
 
@@ -80,6 +80,18 @@
         </mat-form-field>
       </form>
       <div class="flex justify-center">
+        @if (option == 'update') {
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="updateProduct()"
+          [disabled]="productForm.invalid"
+        >
+          <mat-icon>save</mat-icon>
+          Actualizar
+        </button>
+        } @else {
+
         <button
           mat-flat-button
           color="primary"
@@ -89,6 +101,7 @@
           <mat-icon>save</mat-icon>
           Guardar
         </button>
+        }
       </div>
     </div>
   </form>

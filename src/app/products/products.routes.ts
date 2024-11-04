@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { provideRouter, Routes } from '@angular/router';
 import { ProductsComponent } from './pages/products.component';
 import { AddProductPageComponent } from './pages/add-product-page/add-product-page.component';
 
@@ -9,6 +9,10 @@ export const routes: Routes = [
   },
   {
     path: 'create',
+    component: AddProductPageComponent,
+  },
+  {
+    path: 'update/:id',
     component: AddProductPageComponent,
   },
 ];

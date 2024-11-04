@@ -1,8 +1,20 @@
 <app-loader [isLoading]="(products$ | async)!.loading">
-  @if ((products$ | async)!.data != null && (products$ | async)!.data!.length > 0){
-  <table mat-table [dataSource]="(products$ | async)!.data! |  tableFilter : searchFilter : 'productName'  " class="
-    mat-elevation-z8
-    ">
+  @if ((products$ | async)!.data != null && (products$ | async)!.data!.length >
+  0){
+  <div class="flex flex-wrap content-center my-5 gap-3">
+    <app-search-input
+      [(inputValue)]="searchFilter"
+      placeholder="Buscar Productos..."
+    ></app-search-input>
+    <app-add-product-btn></app-add-product-btn>
+  </div>
+  <table
+    mat-table
+    [dataSource]="
+      (products$ | async)!.data! | tableFilter : searchFilter : 'productName'
+    "
+    class="mat-elevation-z8"
+  >
     <ng-container matColumnDef="Id">
       <th mat-header-cell *matHeaderCellDef>Id</th>
       <td mat-cell *matCellDef="let product">{{ product.productId }}</td>
@@ -20,7 +32,11 @@
     <ng-container matColumnDef="Acciones">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let product">
-        <button mat-button class="text-center w-2">
+        <button
+          mat-button
+          class="text-center w-2"
+          (click)="goToUpdate(product.productId)"
+        >
           <mat-icon>open_in_new</mat-icon>
         </button>
       </td>
@@ -28,12 +44,20 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-    } @else if ((products$ | async)!.status === "error"){
-  <app-alert [icon]="'warning'" [message]="(products$ | async)!.message" [color]="'warn'">
+  } @else if ((products$ | async)!.status === "error"){
+  <app-alert
+    [icon]="'warning'"
+    [message]="(products$ | async)!.message"
+    [color]="'warn'"
+  >
   </app-alert>
   } @else {
 
-  <app-alert [icon]="'warning'" [message]="'No existen productos para mostrar'" [color]="'warn'">
+  <app-alert
+    [icon]="'warning'"
+    [message]="'No existen productos para mostrar'"
+    [color]="'warn'"
+  >
   </app-alert>
 
   }

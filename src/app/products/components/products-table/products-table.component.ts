@@ -6,6 +6,10 @@ import { LoaderComponent } from '../../../utilComponents/loader/loader.component
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { AlertComponent } from '../../../utilComponents/alert/alert.component';
+import { getProductByIdUrl } from '../../../../constants/httpUrlConstants';
+import { Router } from '@angular/router';
+import { SearchInputComponent } from '../../../utilComponents/search-input/search-input.component';
+import { AddProductBtnComponent } from '../add-product-btn/add-product-btn.component';
 
 @Component({
   selector: 'app-products-table',
@@ -17,18 +21,26 @@ import { AlertComponent } from '../../../utilComponents/alert/alert.component';
     LoaderComponent,
     TableFilterPipe,
     MatIconModule,
-    AlertComponent
+    AlertComponent,
+    SearchInputComponent,
+    AddProductBtnComponent,
   ],
   templateUrl: './products-table.component.html',
 })
 export class ProductsTableComponent {
-  constructor(private productsService: ProductsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private router: Router
+  ) {}
 
-  @Input() searchFilter: string = '';
+  searchFilter: string = '';
 
   public displayedColumns: string[] = ['Id', 'Nombre', 'Stock', 'Acciones'];
 
   products$ = this.productsService.getProducts();
 
-
+  goToUpdate(id: string) {
+    console.log('Go to update', id);
+    this.router.navigate(['app/products/update', id]);
+  }
 }

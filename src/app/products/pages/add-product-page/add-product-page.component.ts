@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,6 +18,7 @@ import { ProductReqDTO } from '../../../../dtos/req/ProductReqDTO';
 import { BrandReqDTO } from '../../../../dtos/req';
 import { positiveNumberValidator } from '../../../utils/CustomValidator';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product-page',
@@ -39,12 +40,43 @@ export class AddProductPageComponent {
   constructor(
     private brandsService: BrandsServiceService,
     private productsService: ProductsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   brands$ = this.brandsService.getBrands();
-
+  product$: any = null;
   selectedBrand = {};
+  option = 'create';
+  tittle = 'Nuevo Producto';
+  description = 'Agrega un nuevo producto al inventario';
+
+  @Input()
+  set id(id: number) {
+    if (id) {
+      console.log('Product id: ' + id);
+      this.productsService.getProductById(id).subscribe({
+        next: (res) => {
+          this.tittle = 'Actualizar Producto';
+          this.description = 'Actualiza los datos del producto';
+          this.option = 'update';
+          console.log('Product to update' + res.data);
+          this.productForm.patchValue({
+            productId: res.data?.productId,
+            productName: res.data?.productName,
+            productStock: res.data?.productStock,
+            productPurchasePrice: res.data?.productPurchasePrice,
+            productSalePrice: res.data?.productSalePrice,
+            productBrand: res.data?.productBrand,
+          });
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+  }
+
   priceDifference(): number | string {
     const purchasePrice = this.productForm.get('productPurchasePrice')!.value;
     const salePrice = this.productForm.get('productSalePrice')!.value;
@@ -60,6 +92,7 @@ export class AddProductPageComponent {
   }
 
   productForm = new FormGroup({
+    productId: new FormControl<number>(0),
     productName: new FormControl<string>('', [
       Validators.required,
       Validators.nullValidator,
@@ -92,16 +125,25 @@ export class AddProductPageComponent {
       .createProduct(this.productForm.value as ProductReqDTO)
       .subscribe({
         next: (res) => {
-          this.snackBar.open(res.message, 'Cerrar', {
-            duration: 40000,
-          });
+          // this.router.navigate(['/app/products']);
+          this.snackBar.open(res.message, 'Cerrar');
           console.log(res);
         },
-        error: (err) => {
-          this.snackBar.open(err.error.message, 'Cerrar', {
-            duration: 3000,
-          });
-          console.log(err);
+      });
+  }
+
+  updateProduct() {
+    console.log(this.productForm.value);
+    this.productsService
+      .updateProduct(
+        this.productForm.value as ProductReqDTO,
+        this.productForm.get('productId')!.value!
+      )
+      .subscribe({
+        next: (res) => {
+          // this.router.navigate(['/app/products']);
+          this.snackBar.open(res.message, 'Cerrar');
+          console.log(res);
         },
       });
   }

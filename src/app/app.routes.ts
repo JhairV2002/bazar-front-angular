@@ -18,8 +18,13 @@ export const routes: Routes = [
         path: 'products',
         loadChildren: () =>
           import('./products/products.routes').then((m) => m.routes),
-      }
-    ]
+      },
+      {
+        path: 'billing',
+        loadChildren: () =>
+          import('./bills/routes/bills.routes').then((m) => m.routes),
+      },
+    ],
   },
   {
     path: 'login',

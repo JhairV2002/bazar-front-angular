@@ -1,0 +1,14 @@
+<h3>Facturación</h3>
+<app-alert
+  [color]="'accent'"
+  [icon]="'info'"
+  [message]="'Se registran las facturas de los productos vendidos'"
+></app-alert>
+
+<div class="flex flex-wrap content-center my-5 gap-3">
+  <app-search-input
+    [(inputValue)]="searchText"
+    placeholder="Buscar..."
+  ></app-search-input>
+  <app-bill-add-btn></app-bill-add-btn>
+</div>
