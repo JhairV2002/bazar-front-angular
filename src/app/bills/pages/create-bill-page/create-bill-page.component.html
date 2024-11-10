@@ -1,0 +1,49 @@
+<h3>Facturación</h3>
+<app-alert
+  [color]="'accent'"
+  [icon]="'info'"
+  [message]="'Crear una nueva factura'"
+></app-alert>
+
+<form class="grid grid-cols-3 gap-3 my-5">
+  <mat-form-field>
+    <mat-label>Fecha</mat-label>
+    <input matInput type="date" name="date" required />
+  </mat-form-field>
+  <mat-form-field class="col-span-2">
+    <mat-label>Descripcion</mat-label>
+    <input matInput type="text" name="billDescription" required />
+  </mat-form-field>
+
+  <div class="grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center">
+    <mat-form-field>
+      <mat-label>Cant.</mat-label>
+      <input matInput type="number" name="billTotal" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Favorite food</mat-label>
+      <mat-select>
+        @for (food of foods; track food) {
+        <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Total</mat-label>
+      <input matInput type="number" name="billTotal" required />
+    </mat-form-field>
+    <div class="col-span-3">
+      <button mat-fab class="!w-full">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-form-field class="col-span-3">
+    <mat-label>Subtotal</mat-label>
+    <input matInput type="number" name="billSubtotal" required />
+  </mat-form-field>
+  <mat-form-field class="col-span-3">
+    <mat-label>Total</mat-label>
+    <input matInput type="number" name="billTotal" required />
+  </mat-form-field>
+</form>
