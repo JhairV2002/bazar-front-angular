@@ -5,24 +5,49 @@
   [message]="'Crear una nueva factura'"
 ></app-alert>
 
-<form class="grid grid-cols-3 gap-3 my-5">
+<form [formGroup]="billForm" class="grid grid-cols-3 gap-3 my-5">
   <mat-form-field>
     <mat-label>Fecha</mat-label>
-    <input matInput type="date" name="date" required />
+    <input
+      id="date"
+      formControlName="date"
+      matInput
+      type="date"
+      name="date"
+      required
+    />
   </mat-form-field>
   <mat-form-field class="col-span-2">
     <mat-label>Descripcion</mat-label>
-    <input matInput type="text" name="billDescription" required />
+    <input
+      id="description"
+      formControlName="description"
+      matInput
+      type="text"
+      name="billDescription"
+      required
+    />
   </mat-form-field>
 
-  <div class="grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center">
+  <p class="col-span-3 text-lg">Productos</p>
+
+  @for (product of products.controls; track $index) {
+
+  <div
+    [class]="
+      $index != 0
+        ? 'grid grid-cols-[1fr_250px_1fr_1fr] col-span-3 gap-3 content-center'
+        : 'grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center'
+    "
+  >
     <mat-form-field>
-      <mat-label>Cant.</mat-label>
+      <mat-label>Cant</mat-label>
       <input matInput type="number" name="billTotal" required />
     </mat-form-field>
+
     <mat-form-field>
-      <mat-label>Favorite food</mat-label>
-      <mat-select>
+      <mat-label>Producto</mat-label>
+      <mat-select required="true">
         @for (food of foods; track food) {
         <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
         }
@@ -32,18 +57,47 @@
       <mat-label>Total</mat-label>
       <input matInput type="number" name="billTotal" required />
     </mat-form-field>
-    <div class="col-span-3">
-      <button mat-fab class="!w-full">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+    @if ($index != 0) {
+    <button (click)="removeProduct($index)" mat-fab type="button">
+      <mat-icon>remove</mat-icon>
+    </button>
+    }
   </div>
-  <mat-form-field class="col-span-3">
-    <mat-label>Subtotal</mat-label>
-    <input matInput type="number" name="billSubtotal" required />
-  </mat-form-field>
-  <mat-form-field class="col-span-3">
+  }
+  <div class="col-span-3">
+    <button (click)="addProduct()" mat-fab class="!w-full">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field class="col-span-3" class="invisible">
     <mat-label>Total</mat-label>
-    <input matInput type="number" name="billTotal" required />
+    <input
+      id="total"
+      formControlName="total"
+      matInput
+      type="number"
+      name="billTotal"
+    />
   </mat-form-field>
+
+  <div class="col-span-3 col-start-2 col-end-3 mx-auto">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!billForm.valid"
+    >
+      Guardar
+    </button>
+  </div>
+
+  <div class="col-span-3 col-start-2 col-end-3"></div>
 </form>
+
+<div class="fixed bottom-0 left-0 w-full bg-blue-700 text-white p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <span class="text-lg">Total:</span>
+    <span class="text-lg font-bold">$ {{ 100 }}</span>
+  </div>
+</div>
