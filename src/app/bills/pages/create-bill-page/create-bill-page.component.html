@@ -5,7 +5,11 @@
   [message]="'Crear una nueva factura'"
 ></app-alert>
 
-<form [formGroup]="billForm" class="grid grid-cols-3 gap-3 my-5">
+<form
+  [formGroup]="billForm"
+  (ngSubmit)="saveBill()"
+  class="grid grid-cols-3 gap-3 my-5"
+>
   <mat-form-field>
     <mat-label>Fecha</mat-label>
     <input
@@ -31,55 +35,62 @@
 
   <p class="col-span-3 text-lg">Productos</p>
 
-  @for (product of products.controls; track $index) {
+  <div formArrayName="products" class="col-span-3">
+    @for (product of products.controls; track $index; let idx = $index) {
+    <div
+      [formGroupName]="idx"
+      [class]="
+        products.controls.length > 1
+          ? 'grid grid-cols-[1fr_250px_1fr_1fr] col-span-3 gap-3 content-center'
+          : 'grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center'
+      "
+    >
+      <mat-form-field>
+        <mat-label>Cant</mat-label>
+        <input
+          formControlName="cant"
+          matInput
+          type="number"
+          name="billTotal"
+          required
+        />
+      </mat-form-field>
 
-  <div
-    [class]="
-      $index != 0
-        ? 'grid grid-cols-[1fr_250px_1fr_1fr] col-span-3 gap-3 content-center'
-        : 'grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center'
-    "
-  >
-    <mat-form-field>
-      <mat-label>Cant</mat-label>
-      <input matInput type="number" name="billTotal" required />
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Producto</mat-label>
-      <mat-select required="true">
-        @for (food of foods; track food) {
-        <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Total</mat-label>
-      <input matInput type="number" name="billTotal" required />
-    </mat-form-field>
-    @if ($index != 0) {
-    <button (click)="removeProduct($index)" mat-fab type="button">
-      <mat-icon>remove</mat-icon>
-    </button>
+      <mat-form-field>
+        <mat-label>Producto</mat-label>
+        <mat-select required="true" formControlName="product">
+          @if ((products$ | async)) { @for (product of (products$ | async);
+          track product) {
+          <mat-option [value]="product">{{ product.productName }}</mat-option>
+          } } @else {
+          <mat-option disabled>No hay productos</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Subtotal</mat-label>
+        <input
+          formControlName="subtotal"
+          matInput
+          type="number"
+          name="billTotal"
+          required
+        />
+      </mat-form-field>
+      @if (products.controls.length > 1) {
+      <button (click)="removeProduct($index)" mat-fab type="button">
+        <mat-icon>remove</mat-icon>
+      </button>
+      }
+    </div>
     }
   </div>
-  }
+
   <div class="col-span-3">
     <button (click)="addProduct()" mat-fab class="!w-full">
       <mat-icon>add</mat-icon>
     </button>
   </div>
-
-  <mat-form-field class="col-span-3" class="invisible">
-    <mat-label>Total</mat-label>
-    <input
-      id="total"
-      formControlName="total"
-      matInput
-      type="number"
-      name="billTotal"
-    />
-  </mat-form-field>
 
   <div class="col-span-3 col-start-2 col-end-3 mx-auto">
     <button

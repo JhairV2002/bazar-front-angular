@@ -1,6 +1,4 @@
 <app-loader [isLoading]="(products$ | async)!.loading">
-  @if ((products$ | async)!.data != null && (products$ | async)!.data!.length >
-  0){
   <div class="flex flex-wrap content-center my-5 gap-3">
     <app-search-input
       [(inputValue)]="searchFilter"
@@ -8,6 +6,9 @@
     ></app-search-input>
     <app-add-product-btn></app-add-product-btn>
   </div>
+  @if ((products$ | async)!.data != null && (products$ | async)!.data!.length >
+  0){
+
   <table
     mat-table
     [dataSource]="
