@@ -19,7 +19,6 @@ import { map } from 'rxjs';
 import { createRandomUUID, isObjectEmpty } from '../../../utils/utilFuncs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { validateBillDetailContent } from '../../Validators/BillValidators';
 
 @Component({
   selector: 'app-create-bill-page',
@@ -50,10 +49,15 @@ export class CreateBillPageComponent {
     billDate: [''],
     billDescription: [''],
     billDetail: this.fb.group({
-      billDetailLines: this.fb.array(
-        [],
-        [Validators.required, validateBillDetailContent]
-      ),
+      billDetailLines: this.fb.array([
+        this.fb.group({
+          trackingId: createRandomUUID(),
+          quantity: [1],
+          totalPriceByProduct: [0],
+          totalProfitByProduct: [0],
+          product: [null],
+        }),
+      ]),
     }),
     billDetailTotal: [0],
   });
@@ -89,7 +93,7 @@ export class CreateBillPageComponent {
         quantity: [1],
         totalPriceByProduct: [0],
         totalProfitByProduct: [0],
-        product: [null],
+        product: [null, Validators.required],
       })
     );
     console.log('Products', this.products.value);
