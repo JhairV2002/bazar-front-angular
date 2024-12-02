@@ -10,12 +10,16 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { ProductsService } from '../../../products/services/products.service';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 import { createRandomUUID, isObjectEmpty } from '../../../utils/utilFuncs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { validateBillDetailContent } from '../../Validators/BillValidators';
 
 @Component({
   selector: 'app-create-bill-page',
@@ -29,8 +33,10 @@ import { createRandomUUID, isObjectEmpty } from '../../../utils/utilFuncs';
     MatIconModule,
     ReactiveFormsModule,
     CommonModule,
+    MatDatepickerModule,
   ],
   templateUrl: './create-bill-page.component.html',
+  providers: [provideNativeDateAdapter()],
 })
 export class CreateBillPageComponent {
   private fb: FormBuilder = inject(FormBuilder);
@@ -44,7 +50,10 @@ export class CreateBillPageComponent {
     billDate: [''],
     billDescription: [''],
     billDetail: this.fb.group({
-      billDetailLines: this.fb.array([]),
+      billDetailLines: this.fb.array(
+        [],
+        [Validators.required, validateBillDetailContent]
+      ),
     }),
     billDetailTotal: [0],
   });
@@ -80,7 +89,7 @@ export class CreateBillPageComponent {
         quantity: [1],
         totalPriceByProduct: [0],
         totalProfitByProduct: [0],
-        product: [{}],
+        product: [null],
       })
     );
     console.log('Products', this.products.value);

@@ -12,14 +12,10 @@
 >
   <mat-form-field>
     <mat-label>Fecha</mat-label>
-    <input
-      id="date"
-      formControlName="billDate"
-      matInput
-      type="date"
-      name="date"
-      required
-    />
+    <input formControlName="billDate" matInput [matDatepicker]="picker" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <mat-form-field class="col-span-2">
     <mat-label>Descripcion</mat-label>
