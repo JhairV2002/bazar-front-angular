@@ -19,6 +19,9 @@ import { map } from 'rxjs';
 import { createRandomUUID, isObjectEmpty } from '../../../utils/utilFuncs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { PromosListComponent } from '../../../promos/components/promos-list/promos-list.component';
+import { BillResDTO } from '../../../../dtos/res/BillResDTO';
+import { PromoResDTO } from '../../../../dtos/req/BillReqDTO';
 
 @Component({
   selector: 'app-create-bill-page',
@@ -33,9 +36,12 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     ReactiveFormsModule,
     CommonModule,
     MatDatepickerModule,
+    PromosListComponent,
+    MatCheckboxModule,
   ],
   templateUrl: './create-bill-page.component.html',
   providers: [provideNativeDateAdapter()],
+  animations: [],
 })
 export class CreateBillPageComponent {
   private fb: FormBuilder = inject(FormBuilder);
@@ -60,6 +66,8 @@ export class CreateBillPageComponent {
       ]),
     }),
     billDetailTotal: [0],
+    hasBillPromo: [false],
+    promo: [null],
   });
 
   onSubmit() {
@@ -72,6 +80,10 @@ export class CreateBillPageComponent {
 
   get billDetailTotal() {
     return this.billForm.get('billDetailTotal')?.getRawValue() as number;
+  }
+
+  get hasBillPromo() {
+    return this.billForm.get('hasBillPromo')?.getRawValue() as boolean;
   }
 
   trackByFn(index: number, item: any) {
@@ -126,5 +138,24 @@ export class CreateBillPageComponent {
       product.patchValue({ totalPriceByProduct: cant * productPrice });
       this.calculateBillTotal();
     }
+  }
+
+  onHasPromoChange() {
+    if (!this.hasBillPromo) {
+      this.billForm.get('promo')?.clearValidators();
+      this.billForm.patchValue({ promo: null });
+    }
+    console.log(this.billForm);
+  }
+
+  applyPromo() {
+    let promoDisctValue = this.billForm.get('promo')!.value! as PromoResDTO;
+    let promoValue = promoDisctValue.promoValue;
+    let billTotal = this.billDetailTotal;
+    let promoDiscount = billTotal * promoValue;
+    let billTotalWithDiscount = billTotal - promoDiscount;
+    this.billForm.patchValue({ billDetailTotal: billTotalWithDiscount });
+
+    console.log('Promo applied');
   }
 }
