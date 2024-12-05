@@ -1,7 +1,7 @@
 <div [formGroup]="formGroup">
   <mat-form-field>
     <mat-label>Promoción</mat-label>
-    <mat-select required="true" formControlName="promo">
+    <mat-select formControlName="promo" (valueChange)="onPromoChange($event)">
       @for(promo of (promos$ | async); track promo?.promoId){
       <mat-option [value]="promo">{{ promo.promoName }}</mat-option>
       }

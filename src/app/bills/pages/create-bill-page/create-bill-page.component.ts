@@ -46,6 +46,7 @@ import { PromoResDTO } from '../../../../dtos/req/BillReqDTO';
 export class CreateBillPageComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private productService: ProductsService = inject(ProductsService);
+  public billDetailTotalWithPromo: number = 0;
 
   products$ = this.productService
     .getProducts()
@@ -78,12 +79,25 @@ export class CreateBillPageComponent {
     return this.billForm.get('billDetail')!.get('billDetailLines') as FormArray;
   }
 
-  get billDetailTotal() {
+  get billDetailTotalValue() {
     return this.billForm.get('billDetailTotal')?.getRawValue() as number;
   }
 
   get hasBillPromo() {
     return this.billForm.get('hasBillPromo')?.getRawValue() as boolean;
+  }
+
+  get promo() {
+    return this.billForm.get('promo')?.getRawValue() as PromoResDTO;
+  }
+
+  get billDetailTotalControl() {
+    return this.billForm.get('billDetailTotal') as FormControl;
+  }
+
+  set billDetailTotalControl(value: FormControl) {
+    console.log('Bill detail total control', value);
+    this.billForm.patchValue({ billDetailTotal: value.value });
   }
 
   trackByFn(index: number, item: any) {
@@ -96,6 +110,15 @@ export class CreateBillPageComponent {
       total += product.get('totalPriceByProduct')!.value;
     });
     this.billForm.patchValue({ billDetailTotal: total });
+
+    if (this.hasBillPromo && this.promo) {
+      let totalWithDiscount = 0;
+      const promoValue = this.promo.promoValue;
+      const valueDiscounted = total * promoValue;
+      const billDetailTotalDiscounted = total - valueDiscounted;
+      totalWithDiscount = billDetailTotalDiscounted;
+      this.billDetailTotalWithPromo = totalWithDiscount;
+    }
   }
 
   addProduct() {
@@ -144,18 +167,9 @@ export class CreateBillPageComponent {
     if (!this.hasBillPromo) {
       this.billForm.get('promo')?.clearValidators();
       this.billForm.patchValue({ promo: null });
+      return;
     }
+    this.billForm.get('promo')?.setValidators(Validators.required);
     console.log(this.billForm);
-  }
-
-  applyPromo() {
-    let promoDisctValue = this.billForm.get('promo')!.value! as PromoResDTO;
-    let promoValue = promoDisctValue.promoValue;
-    let billTotal = this.billDetailTotal;
-    let promoDiscount = billTotal * promoValue;
-    let billTotalWithDiscount = billTotal - promoDiscount;
-    this.billForm.patchValue({ billDetailTotal: billTotalWithDiscount });
-
-    console.log('Promo applied');
   }
 }

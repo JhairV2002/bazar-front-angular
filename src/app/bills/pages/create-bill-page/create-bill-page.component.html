@@ -112,7 +112,11 @@
   >
 
   @if (hasBillPromo) {
-  <app-promos-list [formGroup]="billForm"></app-promos-list>
+  <app-promos-list
+    [formGroup]="billForm"
+    [billDetailTotal]="billDetailTotalValue"
+    [(billDetailTotalWithPromo)]="billDetailTotalWithPromo"
+  ></app-promos-list>
   }
 
   <div class="col-span-3 mx-auto">
@@ -130,6 +134,14 @@
 <div class="fixed bottom-0 left-0 w-full bg-blue-700 text-white p-4">
   <div class="container mx-auto flex justify-between items-center">
     <span class="text-lg">Total:</span>
-    <span class="text-lg font-bold">$ {{ billDetailTotal }}</span>
+    <div>
+      @if (hasBillPromo && promo != null) {
+      <span class="text-lg line-through">$ {{ billDetailTotalValue }}</span>
+      <span class="text-lg font-bold">$ {{ billDetailTotalWithPromo }}</span>
+      } @else {
+
+      <span class="text-lg font-bold">$ {{ billDetailTotalValue }}</span>
+      }
+    </div>
   </div>
 </div>
