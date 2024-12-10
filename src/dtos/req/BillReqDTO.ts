@@ -1,75 +1,34 @@
-import { ProductReqDTO } from './ProductReqDTO';
+import { BrandListDTO } from '../res';
+import { ProductsResDTO } from '../res/ProductsResDTO';
+import { PromoResDTO } from '../res/PromoResDTO';
 
 export interface BillReqDTO {
-  billId: number;
-  billDate: Date;
+  billDate: string;
   billDescription: string;
-  billDetail: BillDetailReqDTO;
-  isActive: boolean;
-  billTotal: number;
-  billProfit: number;
-  billStatus: BillStatusEnum;
-  hasProductPromo: boolean;
+  billDetail: BillDetail;
+  billDetailTotal: number;
   hasBillPromo: boolean;
-  promoType: PromoTypeEnum;
-  promo: PromoReqDTO;
+  promo: PromoResDTO;
 }
-export interface BillDetailReqDTO {
-  billDetailLines: BillDetailLineReqDTO[];
+
+export interface Product {
+  productId: number;
+  productName: string;
+  productStock: number;
+  productPurchasePrice: number;
+  productSalePrice: number;
+  productProfit: number;
+  productBrand: BrandListDTO;
 }
-export interface BillDetailLineReqDTO {
+
+export interface BillDetailLine {
+  trackingId: string;
   quantity: number;
   totalPriceByProduct: number;
   totalProfitByProduct: number;
-  product: ProductReqDTO;
-  hasPromo: boolean;
-  promo: PromoResDTO | null;
-}
-export interface PromoReqDTO {
-  promoId: number;
-  promoName: string;
-  promoDescription: string;
-  promoType: PromoTypeEnum;
-  promoScope: PromoScopeEnum;
-  specialPromoX: number;
-  specialPromoY: number;
-  promoValue: number;
-}
-export interface PromoResDTO {
-  promoId: number;
-  promoName: string;
-  promoDescription: string;
-  promoType: PromoTypeEnum;
-  promoScope: PromoScopeEnum;
-  promoValue: number;
-  specialPromoX: number;
-  specialPromoY: number;
+  product: ProductsResDTO;
 }
 
-export enum PromoScopeEnum {
-  BILL = 'BILL',
-  PRODUCT = 'PRODUCT',
-}
-
-export enum PromoTypeEnum {
-  DISCOUNTPRODUCT = 'DISCOUNTPRODUCT',
-  DISCOUNTBILL = 'DISCOUNTBILL',
-  SPECIALPROMOS = 'SPECIALPROMOS',
-}
-
-export enum BillStatusEnum {
-  PAGADO = 'PAGADO',
-  PENDIENTE = 'PENDIENTE',
-  DEVUELTO = 'DEVUELTO',
-  CANCELADO = 'CANCELADO',
-}
-
-export interface SpecialPromoResDTO {
-  promoId: number;
-  promoName: string;
-  promoDescription: string;
-  promoType: string;
-  promoScope: string;
-  specialPromoX: number;
-  specialPromoY: number;
+export interface BillDetail {
+  billDetailLines: BillDetailLine[];
 }

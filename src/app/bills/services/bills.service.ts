@@ -1,9 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { FetchService } from '../../utils/fetch.service';
+import { BillReqDTO } from '../../../dtos/req/BillReqDTO';
+import { createBillUrl } from '../../../constants/httpUrlConstants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BillsService {
-  constructor(private http: HttpClient) {}
+  private fetchService: FetchService = inject(FetchService);
+
+  createBill(bill: any) {
+    return this.fetchService.genericPostPetition<null, BillReqDTO>(
+      createBillUrl,
+      bill
+    );
+  }
 }

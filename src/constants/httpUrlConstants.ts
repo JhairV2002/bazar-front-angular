@@ -27,6 +27,10 @@ export const updateProductUrl = (id: number): string =>
 export const promosBaseUrl: string = `${url}/promos`;
 export const getAllPromosUrl: string = `${promosBaseUrl}/get-all`;
 
+// -- bills --
+export const billsBaseUrl: string = `${url}/bills`;
+export const createBillUrl: string = `${billsBaseUrl}/create/`;
+
 // ---- Authentication ----
 
 export const authenticationUrl: string = `${url}/auth/login`;

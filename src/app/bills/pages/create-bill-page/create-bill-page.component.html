@@ -120,6 +120,10 @@
   }
 
   <div class="col-span-3 mx-auto">
+    @if(loading){
+    <mat-spinner diameter="30"></mat-spinner>
+    } @else {
+
     <button
       mat-raised-button
       color="primary"
@@ -128,6 +132,7 @@
     >
       Guardar
     </button>
+    }
   </div>
 </form>
 

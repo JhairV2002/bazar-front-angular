@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProductsService } from '../../../products/services/products.service';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
@@ -20,8 +20,12 @@ import { createRandomUUID, isObjectEmpty } from '../../../utils/utilFuncs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { PromosListComponent } from '../../../promos/components/promos-list/promos-list.component';
-import { BillResDTO } from '../../../../dtos/res/BillResDTO';
-import { PromoResDTO } from '../../../../dtos/req/BillReqDTO';
+import { PromoResDTO } from '../../../../dtos/res/PromoResDTO';
+import { BillsService } from '../../services/bills.service';
+import { BillReqDTO } from '../../../../dtos/req/BillReqDTO';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-bill-page',
@@ -38,6 +42,8 @@ import { PromoResDTO } from '../../../../dtos/req/BillReqDTO';
     MatDatepickerModule,
     PromosListComponent,
     MatCheckboxModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './create-bill-page.component.html',
   providers: [provideNativeDateAdapter()],
@@ -46,7 +52,11 @@ import { PromoResDTO } from '../../../../dtos/req/BillReqDTO';
 export class CreateBillPageComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private productService: ProductsService = inject(ProductsService);
+  private billsService: BillsService = inject(BillsService);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+  private router: Router = inject(Router);
   public billDetailTotalWithPromo: number = 0;
+  public loading: boolean = false;
 
   products$ = this.productService
     .getProducts()
@@ -73,6 +83,7 @@ export class CreateBillPageComponent {
 
   onSubmit() {
     console.warn(this.billForm.value);
+    this.saveBill();
   }
 
   get products() {
@@ -146,11 +157,6 @@ export class CreateBillPageComponent {
     console.log('Products', this.products.value);
   }
 
-  saveBill() {
-    console.log('Bill saved');
-    console.log(this.billForm.value);
-  }
-
   calculateSubtotal(index: number) {
     const product = this.products.controls[index] as FormGroup;
     const productData = this.products.controls[index].value;
@@ -171,5 +177,26 @@ export class CreateBillPageComponent {
     }
     this.billForm.get('promo')?.setValidators(Validators.required);
     console.log(this.billForm);
+  }
+
+  saveBill() {
+    console.log('Bill saved');
+    console.log(this.billForm.value);
+    this.loading = true;
+    this.billsService.createBill(this.billForm.value).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.snackBar.open(res.message, 'Cerrar');
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open(err.error.message, 'Cerrar');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+        this.router.navigate(['/app/bills']);
+      },
+    });
   }
 }
