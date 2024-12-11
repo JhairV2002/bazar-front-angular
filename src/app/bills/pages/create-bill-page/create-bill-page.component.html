@@ -1,152 +1,163 @@
-<h3>Facturación</h3>
-<app-alert
-  [color]="'accent'"
-  [icon]="'info'"
-  [message]="'Crear una nueva factura'"
-></app-alert>
+<section class="h-full">
+  <section>
+    <h3>Facturación</h3>
+    <app-alert
+      [color]="'accent'"
+      [icon]="'info'"
+      [message]="'Crear una nueva factura'"
+    ></app-alert>
 
-<form
-  [formGroup]="billForm"
-  (ngSubmit)="saveBill()"
-  class="grid grid-cols-3 gap-3 my-5"
->
-  <mat-form-field>
-    <mat-label>Fecha</mat-label>
-    <input formControlName="billDate" matInput [matDatepicker]="picker" />
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="col-span-2">
-    <mat-label>Descripcion</mat-label>
-    <input
-      id="description"
-      formControlName="billDescription"
-      matInput
-      type="text"
-      name="billDescription"
-      required
-    />
-  </mat-form-field>
+    <form
+      [formGroup]="billForm"
+      (ngSubmit)="saveBill()"
+      class="grid grid-cols-3 gap-3 my-5"
+    >
+      <mat-form-field>
+        <mat-label>Fecha</mat-label>
+        <input formControlName="billDate" matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="col-span-2">
+        <mat-label>Descripcion</mat-label>
+        <input
+          id="description"
+          formControlName="billDescription"
+          matInput
+          type="text"
+          name="billDescription"
+          required
+        />
+      </mat-form-field>
 
-  <p class="col-span-3 text-lg">Productos</p>
+      <p class="col-span-3 text-lg">Productos</p>
 
-  <div formGroupName="billDetail" class="col-span-3">
-    <div formGroupName="billDetailLines">
-      @for (product of products.controls; track
-      product.getRawValue().trackingId; let idx = $index) {
-      <div
-        [formGroupName]="idx"
-        [class]="
-          products.controls.length > 1
-            ? 'grid grid-cols-[1fr_250px_1fr_1fr] col-span-3 gap-3 content-center'
-            : 'grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center'
-        "
-      >
-        <mat-form-field>
-          <mat-label>Cant</mat-label>
-          <input
-            formControlName="quantity"
-            matInput
-            type="number"
-            name="quantity"
-            required
-            (keyup)="calculateSubtotal(idx)"
-          />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Producto</mat-label>
-          <mat-select
-            required="true"
-            formControlName="product"
-            (selectionChange)="calculateSubtotal(idx)"
+      <div formGroupName="billDetail" class="col-span-3">
+        <div formGroupName="billDetailLines">
+          @for (product of products.controls; track
+          product.getRawValue().trackingId; let idx = $index) {
+          <div
+            [formGroupName]="idx"
+            [class]="
+              products.controls.length > 1
+                ? 'grid grid-cols-[1fr_250px_1fr_1fr] col-span-3 gap-3 content-center'
+                : 'grid grid-cols-[1fr_250px_1fr] col-span-3 gap-3 content-center'
+            "
           >
-            @if ((products$ | async)) { @for (product of (products$ |
-            async);track product) {
+            <mat-form-field>
+              <mat-label>Cant</mat-label>
+              <input
+                formControlName="quantity"
+                matInput
+                type="number"
+                name="quantity"
+                required
+                (keyup)="calculateSubtotal(idx)"
+              />
+            </mat-form-field>
 
-            <mat-option [value]="product">{{
-              product.productName + " - $" + product.productSalePrice
-            }}</mat-option>
-            } } @else {
-            <mat-option disabled>No hay productos</mat-option>
+            <mat-form-field>
+              <mat-label>Producto</mat-label>
+              <mat-select
+                required="true"
+                formControlName="product"
+                (selectionChange)="calculateSubtotal(idx)"
+              >
+                @if ((products$ | async)) { @for (product of (products$ |
+                async);track product) {
+
+                <mat-option [value]="product">{{
+                  product.productName + " - $" + product.productSalePrice
+                }}</mat-option>
+                } } @else {
+                <mat-option disabled>No hay productos</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Subtotal</mat-label>
+              <input
+                formControlName="totalPriceByProduct"
+                matInput
+                type="number"
+                name="totalPriceByProduct"
+                required
+              />
+            </mat-form-field>
+            @if (products.controls.length > 1) {
+            <button
+              (click)="removeProduct(idx); $event.preventDefault()"
+              mat-fab
+              type="button"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
             }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Subtotal</mat-label>
-          <input
-            formControlName="totalPriceByProduct"
-            matInput
-            type="number"
-            name="totalPriceByProduct"
-            required
-          />
-        </mat-form-field>
-        @if (products.controls.length > 1) {
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="col-span-3">
         <button
-          (click)="removeProduct(idx); $event.preventDefault()"
+          (click)="addProduct(); $event.preventDefault()"
           mat-fab
-          type="button"
+          class="!w-full"
         >
-          <mat-icon>remove</mat-icon>
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <mat-checkbox formControlName="hasBillPromo" (change)="onHasPromoChange()"
+        >Aplicar Promoción</mat-checkbox
+      >
+
+      @if (hasBillPromo) {
+      <app-promos-list
+        [formGroup]="billForm"
+        [billDetailTotal]="billDetailTotalValue"
+        [(billDetailTotalWithPromo)]="billDetailTotalWithPromo"
+      ></app-promos-list>
+      }
+
+      <div class="col-span-3 mx-auto">
+        @if(loading){
+        <mat-spinner diameter="30"></mat-spinner>
+        } @else {
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!billForm.valid"
+        >
+          Guardar
         </button>
         }
       </div>
-      }
+    </form>
+  </section>
+
+  <div class="sticky bottom-0 w-full border-black text-blue-600 p-4">
+    <div class="flex justify-between items-center">
+      <span class="text-lg font-bold">Total:</span>
+      <div class="flex gap-3">
+        @if (hasBillPromo && promo != null) {
+        <span class="text-lg line-through text-orange-500"
+          >$ {{ billDetailTotalValue }}</span
+        >
+        <span class="text-lg font-bold text-green-700"
+          >$ {{ billDetailTotalWithPromo }}</span
+        >
+        } @else {
+
+        <span class="text-lg font-bold">$ {{ billDetailTotalValue }}</span>
+        }
+      </div>
     </div>
   </div>
-
-  <div class="col-span-3">
-    <button
-      (click)="addProduct(); $event.preventDefault()"
-      mat-fab
-      class="!w-full"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-
-  <mat-checkbox formControlName="hasBillPromo" (change)="onHasPromoChange()"
-    >Aplicar Promoción</mat-checkbox
-  >
-
-  @if (hasBillPromo) {
-  <app-promos-list
-    [formGroup]="billForm"
-    [billDetailTotal]="billDetailTotalValue"
-    [(billDetailTotalWithPromo)]="billDetailTotalWithPromo"
-  ></app-promos-list>
-  }
-
-  <div class="col-span-3 mx-auto">
-    @if(loading){
-    <mat-spinner diameter="30"></mat-spinner>
-    } @else {
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="!billForm.valid"
-    >
-      Guardar
-    </button>
-    }
-  </div>
-</form>
-
-<div class="fixed bottom-0 left-0 w-full bg-blue-700 text-white p-4">
-  <div class="container mx-auto flex justify-between items-center">
-    <span class="text-lg">Total:</span>
-    <div>
-      @if (hasBillPromo && promo != null) {
-      <span class="text-lg line-through">$ {{ billDetailTotalValue }}</span>
-      <span class="text-lg font-bold">$ {{ billDetailTotalWithPromo }}</span>
-      } @else {
-
-      <span class="text-lg font-bold">$ {{ billDetailTotalValue }}</span>
-      }
-    </div>
-  </div>
-</div>
+</section>
