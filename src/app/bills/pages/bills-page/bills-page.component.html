@@ -6,9 +6,17 @@
 ></app-alert>
 
 <div class="flex flex-wrap content-center my-5 gap-3">
-  <app-search-input
-    [(inputValue)]="searchText"
-    placeholder="Buscar..."
-  ></app-search-input>
+  <mat-form-field>
+    <mat-label>Ingrese un rango de fechas</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date" />
+      <input matEndDate placeholder="End date" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
   <app-bill-add-btn [action]="redirectToAddBill"></app-bill-add-btn>
 </div>
+<app-bill-table></app-bill-table>

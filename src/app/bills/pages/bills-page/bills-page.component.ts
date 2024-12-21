@@ -6,19 +6,23 @@ import { Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { BillsTableComponent } from '../../components/bills-table/bills-table.component';
+import { TableBillsComponent } from '../../components/table/table-bills.component';
 
 @Component({
   selector: 'app-bills-page',
   standalone: true,
   imports: [
     AlertComponent,
-    SearchInputComponent,
     BillAddBtnComponent,
     BillAddBtnComponent,
     MatInputModule,
-    MatButton,
-    MatIcon,
+    MatDatepickerModule,
+    TableBillsComponent,
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './bills-page.component.html',
 })
 export class BillsPageComponent {

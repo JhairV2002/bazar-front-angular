@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { LoaderComponent } from '../../../utilComponents/loader/loader.component';
+import { BillsService } from '../../services/bills.service';
 
 @Component({
   selector: 'app-bills-table',
@@ -7,4 +8,6 @@ import { LoaderComponent } from '../../../utilComponents/loader/loader.component
   imports: [LoaderComponent],
   templateUrl: './bills-table.component.html',
 })
-export class BillsTableComponent {}
+export class BillsTableComponent {
+  private billService = inject(BillsService);
+}

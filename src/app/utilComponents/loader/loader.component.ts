@@ -8,6 +8,4 @@ import { AlertComponent } from '../alert/alert.component';
   imports: [MatProgressSpinnerModule, AlertComponent],
   templateUrl: './loader.component.html',
 })
-export class LoaderComponent {
-  @Input() isLoading: boolean = false;
-}
+export class LoaderComponent {}

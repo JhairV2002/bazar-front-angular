@@ -30,6 +30,7 @@ export const getAllPromosUrl: string = `${promosBaseUrl}/get-all`;
 // -- bills --
 export const billsBaseUrl: string = `${url}/bills`;
 export const createBillUrl: string = `${billsBaseUrl}/create/`;
+export const getBillsUrl: string = `${billsBaseUrl}/get-all/`;
 
 // ---- Authentication ----
 

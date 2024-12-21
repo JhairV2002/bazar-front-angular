@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { FetchService } from '../../utils/fetch.service';
 import { BillReqDTO } from '../../../dtos/req/BillReqDTO';
-import { createBillUrl } from '../../../constants/httpUrlConstants';
+import {
+  createBillUrl,
+  getBillsUrl,
+} from '../../../constants/httpUrlConstants';
+import { BillResDTO } from '../../../dtos/res/BillResDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -15,5 +19,9 @@ export class BillsService {
       createBillUrl,
       bill
     );
+  }
+
+  getBills() {
+    return this.fetchService.genericGetPetition<BillResDTO[]>(getBillsUrl);
   }
 }
